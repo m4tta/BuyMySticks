@@ -62,6 +62,7 @@ export default new Vuex.Store({
         isActive: false,
         price: 0,
         description: 'No Description...',
+        imageUrl: '',
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
         updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
       }

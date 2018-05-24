@@ -1,14 +1,24 @@
 <template>
-<div class="px-6 py-4 shadow-lg bg-white rounded">
-    <img v-if="p.imageUrl" src="@/assets/logo.svg" alt="A Stick">
-    <img v-if="!p.imageUrl" src="@/assets/image-placeholder.svg" alt="A Stick">
+<div class="px-6 py-4 shadow-lg bg-white rounded flex flex-col">
+  <label class="inline-flex flex flex-col text-center justify-center border-dashed w-full mt-auto" v-bind:class="{'h-48': !p.imageUrl, 'border-4': !p.imageUrl}">
+    <div>
+      <img v-if="p.imageUrl" :src=p.imageUrl class="rounded"/>
+      <img v-else-if="file" :src=this.imagePreview class="rounded"/>
+      <div v-if="!file && !p.imageUrl && isEditing" class="flex flex-col text-center justify-center items-center">
+        <!-- <span>Drag a file or</span> -->
+        <span class="btn-blue">Select File</span>
+      </div>
+    </div>
+    <input type="file" :disabled="!isEditing" @change="previewImage" class="hidden">
+  </label>
+  <div class="mt-auto">
     <div class="flex mt-4 items-end">
       <span v-if="!isEditing" class="text-2xl">{{p.name}}</span>
       <input v-if="isEditing" :disabled="!isEditing" type="text" placeholder="Product Name" class="text-2xl w-full input" v-model="p.name" />
       <div class="flex ml-auto w-1/3 justify-end">
-          <span class="text-1xl">$</span>
-          <span v-if="!isEditing" class="text-3xl">{{p.price}}</span>
-          <input v-if="isEditing" :disabled="!isEditing" type="text" placeholder="00" class="text-3xl w-full input text-right" v-model="p.price" />
+        <span class="text-1xl">$</span>
+        <span v-if="!isEditing" class="text-3xl">{{p.price}}</span>
+        <input v-if="isEditing" :disabled="!isEditing" type="text" placeholder="00" class="text-3xl w-full input text-right" v-model="p.price" />
       </div>
     </div>
     <div class="h-px bg-grey w-full my-2"></div>
@@ -26,18 +36,24 @@
       <button @click="toggleActive" v-if="!isEditing && p.isActive" class="btn-green">Active</button>
       <button @click="toggleActive" v-if="!isEditing && !p.isActive" class="btn-red">Active</button>
     </div>
+  </div>
 </div>
 </template>
 
 <script>
 import { mapActions } from 'vuex'
+import { storage } from '../firebase'
+import uuid from 'uuid/v1'
+
 export default {
   name: 'ProductCard',
   data () {
     return {
       isEditing: false,
       initialState: {},
-      p: {}
+      p: {},
+      file: null,
+      imagePreview: null
     }
   },
   props: {
@@ -56,6 +72,9 @@ export default {
         product: this.product,
         newProduct: this.p
       })
+      if (this.file) {
+        this.uploadImage()
+      }
       this.isEditing = false
     },
     reset () {
@@ -70,6 +89,33 @@ export default {
     },
     toggleActive() {
       this.toggleActiveState(this.product)      
+    },
+    uploadImage() {
+      let storageRef = storage.ref('images/products/');
+      const filename = uuid() + '.jpeg'
+      let imageRef = storageRef.child(filename)
+      imageRef.put(this.file).then((snapshot) => {
+        snapshot.ref.getDownloadURL().then((url) => {
+          this.updateProduct({
+            product: this.product,
+            newProduct: {
+              imageUrl: url
+            }
+          })
+          this.file = null;
+        })
+      });
+      
+    },
+    previewImage(e) {
+      this.file = e.target.files[0]
+      let fr = new FileReader()
+
+      fr.onload = event => {
+        this.imagePreview = event.target.result
+      }
+
+      fr.readAsDataURL(this.file)
     }
   },
   watch: {

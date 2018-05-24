@@ -2,7 +2,7 @@
 <div class="flex flex-col bg-green-light w-full min-h-screen">
   <Header />
   <div class="grid px-16">
-    <product-card v-for="(product, index) in activeProducts" :key="index" :name=product.name :price=product.price :description=product.description />
+    <product-card v-for="(product, index) in activeProducts" :key="index" :product=product />
   </div>
 </div>
 </template>
