@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20.525 14.849">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #2f80ed;
+      }
+    </style>
+  </defs>
+  <g id="checkmark" transform="translate(0 -0.879)">
+    <rect id="Rectangle_22" data-name="Rectangle 22" class="cls-1" width="4" height="10" transform="translate(0 7.146) rotate(-45)"/>
+    <rect id="Rectangle_23" data-name="Rectangle 23" class="cls-1" width="17" height="4" transform="translate(5.676 12.899) rotate(-45)"/>
+  </g>
+</svg>

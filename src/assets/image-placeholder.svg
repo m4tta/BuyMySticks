@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 329.001 171.001">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #e0e0e0;
+      }
+
+      .cls-2 {
+        fill: #f8f8f8;
+      }
+    </style>
+  </defs>
+  <g id="Image-Placeholder" transform="translate(-889.999 -544)">
+    <rect id="Rectangle_36" data-name="Rectangle 36" class="cls-1" width="329" height="171" rx="8" transform="translate(890 544)"/>
+    <path id="Subtraction_1" data-name="Subtraction 1" class="cls-2" d="M324.81-3394.135H25.928L175.37-3470.28l149.442,76.145h0ZM7.475-3401.569h0v-154.257L158.849-3478.7,7.475-3401.569Zm329-3.457v0h0L191.889-3478.7l144.587-73.671v147.343Zm-161.107-82.09h0L22.244-3565.136h306.25l-153.126,78.021Z" transform="translate(882.524 4109.136)"/>
+  </g>
+</svg>
