@@ -1,31 +1,36 @@
 <template>
-<div class="px-6 py-4 shadow-lg bg-white rounded flex flex-col">
-  <label class="inline-flex flex flex-col text-center justify-center border-dashed w-full mt-auto" v-bind:class="{'h-48': !p.imageUrl, 'border-4': !p.imageUrl}">
-    <div>
-      <img v-if="p.imageUrl" :src=p.imageUrl class="rounded"/>
-      <img v-else-if="file" :src=this.imagePreview class="rounded"/>
-      <div v-if="!file && !p.imageUrl && isEditing" class="flex flex-col text-center justify-center items-center">
-        <!-- <span>Drag a file or</span> -->
-        <span class="btn-blue">Select File</span>
-      </div>
+<div class="shadow-lg bg-white-pure rounded flex flex-col">
+  <label class="inline-flex flex flex-col text-center justify-center border-dashed rounded-t w-full" v-bind:class="{'h-48': !p.imageUrl, 'border-4': !p.imageUrl && !file}">
+    <img v-if="file" :src=this.imagePreview class="rounded-t"/>
+    <img v-else-if="p.imageUrl" :src=product.imageUrl class="rounded-t"/>
+    <div v-if="!file && !p.imageUrl && isEditing" class="flex flex-col text-center justify-center items-center">
+      <!-- <span>Drag a file or</span> -->
+      <span class="btn-blue">Select File</span>
     </div>
     <input type="file" :disabled="!isEditing" @change="previewImage" class="hidden">
   </label>
-  <div class="mt-auto">
-    <div class="flex mt-4 items-end">
-      <span v-if="!isEditing" class="text-2xl">{{p.name}}</span>
-      <input v-if="isEditing" :disabled="!isEditing" type="text" placeholder="Product Name" class="text-2xl w-full input" v-model="p.name" />
-      <div class="flex ml-auto w-1/3 justify-end">
-        <span class="text-1xl">$</span>
-        <span v-if="!isEditing" class="text-3xl">{{p.price}}</span>
-        <input v-if="isEditing" :disabled="!isEditing" type="text" placeholder="00" class="text-3xl w-full input text-right" v-model="p.price" />
-      </div>
+  <div class="mt-auto px-4 py-4 flex items-center">
+    <span v-if="!isEditing" class="text-2xl">{{p.name}}</span>
+    <input v-if="isEditing" :disabled="!isEditing" type="text" placeholder="Product Name" class="text-2xl w-full input" v-model="p.name" />
+    <div class="flex ml-auto w-1/3 justify-end">
+      <span class="text-1xl">$</span>
+      <span v-if="!isEditing" class="text-3xl">{{p.price}}</span>
+      <input v-if="isEditing" :disabled="!isEditing" type="text" placeholder="00" class="text-3xl w-full input text-right" v-model="p.price" />
     </div>
-    <div class="h-px bg-grey w-full my-2"></div>
-    <div>
-      <span v-if="!isEditing" class="block text-md my-2">{{p.description}}</span>
-      <textarea v-if="isEditing" :disabled="!isEditing" v-model="p.description" placeholder="Product description" class="text-md h-16 my-2 resize-none w-full input" />
-    </div>
+  </div>
+  <div class="h-px bg-grey-light w-full" />
+  <div class="px-4 py-2 flex items-center">
+    <span v-if="!isEditing" class="block text-md my-2">{{p.description}}</span>
+    <textarea v-if="isEditing" :disabled="!isEditing" v-model="p.description" placeholder="Product description" class="text-md h-16 my-2 resize-none w-full input" />
+  </div>
+  <div class="h-px bg-grey-light w-full" />
+  <div class="px-4 flex items-center justify-end">
+    <input type="number" v-if="isEditing" :disabled="!isEditing" v-model="p.stock" class="text-md my-2 resize-none w-full input" />
+    <span v-if="!isEditing" class="block font-bold text-md my-2">{{p.stock}}</span>
+    <span class="ml-2 font-bold text-grey-dark">Stock</span>
+  </div>
+  <div class="h-px bg-grey-light w-full" />
+  <div class="px-4 py-4">
     <div class="flex justify-between">
       <div>
         <button @click="toggleEdit" v-if="!isEditing" class="btn-blue">Edit</button>
@@ -58,6 +63,11 @@ export default {
   },
   props: {
     product: Object
+  },
+  computed: {
+    thumbnailURL() {
+      return this.product.imageUrl.replace('images%2Fproducts%2F', 'images%2Fproducts%2Fthumb_')
+    }
   },
   methods: {
     ...mapActions(['toggleActiveState', 'updateProduct', 'destroyProduct']),
