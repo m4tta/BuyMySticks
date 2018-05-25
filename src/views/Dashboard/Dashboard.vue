@@ -38,7 +38,7 @@
           </router-link>
         </div>
     </div> <!-- left col -->
-    <div class="w-full py-6 md:px-8 lg:px-32 bg-grey-lightest md:ml-1/3 lg:ml-1/5"> <!-- right col -->
+    <div class="w-full py-6 md:px-8 lg:px-32 bg-white md:ml-1/3 lg:ml-1/5"> <!-- right col -->
         <router-view/>
     </div> <!-- right col -->
   </div>

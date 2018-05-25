@@ -35,7 +35,4 @@ export default {
 </script>
 
 <style scoped>
-* {
-    transition: all 0.15s ease-in-out;
-}
 </style>
