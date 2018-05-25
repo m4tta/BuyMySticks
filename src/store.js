@@ -61,6 +61,7 @@ export default new Vuex.Store({
         name: 'New Product',
         isActive: false,
         price: 0,
+        stock: 0,
         description: 'No Description...',
         imageUrl: '',
         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
