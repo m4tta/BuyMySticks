@@ -15,17 +15,41 @@
     <div class="flex ml-auto w-1/3 justify-end">
       <span class="text-1xl">$</span>
       <span v-if="!isEditing" class="text-3xl">{{p.price}}</span>
-      <input :class="{'border-red': errors.first('price')}" @change="onChangeValidate" v-if="isEditing" :disabled="!isEditing" type="text" placeholder="00" class="text-3xl w-full input text-right" name="price" v-validate="{required: true, numeric: true, min_value: 1}" v-model="p.price" />
+      <input :class="{'border-red': errors.first('price')}" 
+        @change="onChangeValidate" 
+        v-if="isEditing" 
+        :disabled="!isEditing" 
+        type="text" 
+        placeholder="00" 
+        class="text-3xl w-full input text-right" 
+        name="price" 
+        v-validate="{required: true, numeric: true, min_value: 1}" v-model="p.price" />
     </div>
   </div>
   <div class="h-px bg-grey-light w-full" />
   <div class="px-4 py-2 flex items-center">
     <span v-if="!isEditing" class="block text-md my-2">{{p.description}}</span>
-    <textarea :class="{'border-red': errors.first('description')}" @change="onChangeValidate" v-if="isEditing" :disabled="!isEditing" v-model="p.description" v-validate="{required: true, min: 10}" name="description" placeholder="Product description" class="text-md h-16 my-2 resize-none w-full input" />
+    <textarea :class="{'border-red': errors.first('description')}" 
+    @change="onChangeValidate" 
+    v-if="isEditing" 
+    :disabled="!isEditing" 
+    v-model="p.description" 
+    v-validate="{required: true, min: 10}" 
+    name="description" 
+    placeholder="Product description" 
+    class="text-md h-16 my-2 resize-none w-full input" />
   </div>
   <div class="h-px bg-grey-light w-full" />
   <div class="px-4 flex items-center justify-end">
-    <input :class="{'border-red': errors.first('stock')}" @change="onChangeValidate" type="number" v-if="isEditing" :disabled="!isEditing" v-model="p.stock" v-validate="{required: true, numeric: true}" name="stock" class="text-md my-2 resize-none w-full input" />
+    <input :class="{'border-red': errors.first('stock')}" 
+    @change="onChangeValidate" 
+    type="number" 
+    v-if="isEditing" 
+    :disabled="!isEditing" 
+    v-model="p.stock" 
+    v-validate="{required: true, numeric: true}" 
+    name="stock" 
+    class="text-md my-2 resize-none w-1/4 input" />
     <span v-if="!isEditing" class="block font-bold text-md my-2">{{p.stock}}</span>
     <span class="ml-2 font-bold text-grey-dark">Stock</span>
   </div>
@@ -50,7 +74,7 @@
 
 <script>
 import { mapActions } from 'vuex'
-import { storage } from '../firebase'
+import { storage } from '../../firebase'
 import uuid from 'uuid/v1'
 
 export default {
@@ -108,7 +132,11 @@ export default {
       }
     },
     toggleActive() {
-      this.toggleActiveState(this.product)      
+      this.$validator.validateAll().then(valid => {
+        if (valid && p.price > 0) {
+          this.toggleActiveState(this.product)      
+        }
+      })
     },
     uploadImage() {
       let storageRef = storage.ref('images/products/');

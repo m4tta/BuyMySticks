@@ -11,7 +11,7 @@
 // @ is an alias to /src
 
 import Header from '@/components/Header.vue'
-import ProductCard from '@/components/ProductCard.vue'
+import ProductCard from '@/components/Products/ProductCard.vue'
 import { mapState } from 'vuex'
 
 export default {

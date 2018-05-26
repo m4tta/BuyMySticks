@@ -24,7 +24,7 @@
 <script>
 // @ is an alias to /src
 
-import EditableProductCard from '@/components/EditableProductCard.vue'
+import EditableProductCard from '@/components/Products/EditableProductCard.vue'
 
 import { mapState, mapActions } from 'vuex'
 

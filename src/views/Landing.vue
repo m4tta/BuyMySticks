@@ -15,7 +15,7 @@
 // @ is an alias to /src
 
 import Header from '@/components/Header.vue'
-import ProductCard from '@/components/ProductCard.vue'
+import ProductCard from '@/components/Products/ProductCard.vue'
 import StripeLogo from '@/components/StripeLogo.vue'
 import { mapState } from 'vuex'
 import _ from 'lodash'
