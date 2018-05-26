@@ -2,7 +2,7 @@
 <div class="shadow-lg bg-white-pure rounded flex flex-col">
   <label class="inline-flex flex flex-col text-center justify-center border-dashed rounded-t w-full" v-bind:class="{'h-48': !p.imageUrl, 'border-4': !p.imageUrl && !file}">
     <img v-if="file" :src=this.imagePreview class="rounded-t"/>
-    <img v-else-if="p.imageUrl" :src=product.imageUrl class="rounded-t"/>
+    <img v-else-if="p.imageUrl" :src=thumbnailURL class="rounded-t"/>
     <div v-if="!file && !p.imageUrl && isEditing" class="flex flex-col text-center justify-center items-center">
       <!-- <span>Drag a file or</span> -->
       <span class="btn-blue">Select File</span>
@@ -11,26 +11,29 @@
   </label>
   <div class="mt-auto px-4 py-4 flex items-center">
     <span v-if="!isEditing" class="text-2xl">{{p.name}}</span>
-    <input v-if="isEditing" :disabled="!isEditing" type="text" placeholder="Product Name" class="text-2xl w-full input" v-model="p.name" />
+    <input :class="{'border-red': errors.first('name')}" @change="onChangeValidate" v-if="isEditing" :disabled="!isEditing" type="text" placeholder="Product Name" class="text-2xl w-full input" name="name" v-validate="{required: true}" v-model="p.name" />
     <div class="flex ml-auto w-1/3 justify-end">
       <span class="text-1xl">$</span>
       <span v-if="!isEditing" class="text-3xl">{{p.price}}</span>
-      <input v-if="isEditing" :disabled="!isEditing" type="text" placeholder="00" class="text-3xl w-full input text-right" v-model="p.price" />
+      <input :class="{'border-red': errors.first('price')}" @change="onChangeValidate" v-if="isEditing" :disabled="!isEditing" type="text" placeholder="00" class="text-3xl w-full input text-right" name="price" v-validate="{required: true, numeric: true, min_value: 1}" v-model="p.price" />
     </div>
   </div>
   <div class="h-px bg-grey-light w-full" />
   <div class="px-4 py-2 flex items-center">
     <span v-if="!isEditing" class="block text-md my-2">{{p.description}}</span>
-    <textarea v-if="isEditing" :disabled="!isEditing" v-model="p.description" placeholder="Product description" class="text-md h-16 my-2 resize-none w-full input" />
+    <textarea :class="{'border-red': errors.first('description')}" @change="onChangeValidate" v-if="isEditing" :disabled="!isEditing" v-model="p.description" v-validate="{required: true, min: 10}" name="description" placeholder="Product description" class="text-md h-16 my-2 resize-none w-full input" />
   </div>
   <div class="h-px bg-grey-light w-full" />
   <div class="px-4 flex items-center justify-end">
-    <input type="number" v-if="isEditing" :disabled="!isEditing" v-model="p.stock" class="text-md my-2 resize-none w-full input" />
+    <input :class="{'border-red': errors.first('stock')}" @change="onChangeValidate" type="number" v-if="isEditing" :disabled="!isEditing" v-model="p.stock" v-validate="{required: true, numeric: true}" name="stock" class="text-md my-2 resize-none w-full input" />
     <span v-if="!isEditing" class="block font-bold text-md my-2">{{p.stock}}</span>
     <span class="ml-2 font-bold text-grey-dark">Stock</span>
   </div>
   <div class="h-px bg-grey-light w-full" />
-  <div class="px-4 py-4">
+  <div class="px-4 py-2 flex flex-col">
+    <span class="text-xs text-red" v-for="(error, index) in errors.all()" :key="index">{{error}}</span>
+  </div>
+  <div class="px-4 py-2">
     <div class="flex justify-between">
       <div>
         <button @click="toggleEdit" v-if="!isEditing" class="btn-blue">Edit</button>
@@ -71,6 +74,9 @@ export default {
   },
   methods: {
     ...mapActions(['toggleActiveState', 'updateProduct', 'destroyProduct']),
+    onChangeValidate() {
+      this.$validator.validateAll();
+    },
     toggleEdit () {
       this.isEditing = !this.isEditing
       if (this.isEditing === false) {
@@ -78,14 +84,18 @@ export default {
       }
     },
     save () {
-      this.updateProduct({
-        product: this.product,
-        newProduct: this.p
+      this.$validator.validateAll().then(valid => {
+        if (valid) {
+          this.updateProduct({
+            product: this.product,
+            newProduct: this.p
+          })
+          if (this.file) {
+            this.uploadImage()
+          }
+          this.isEditing = false
+        }
       })
-      if (this.file) {
-        this.uploadImage()
-      }
-      this.isEditing = false
     },
     reset () {
       this.p = Object.assign(this.p, this.initialState)
@@ -106,13 +116,15 @@ export default {
       let imageRef = storageRef.child(filename)
       imageRef.put(this.file).then((snapshot) => {
         snapshot.ref.getDownloadURL().then((url) => {
-          this.updateProduct({
-            product: this.product,
-            newProduct: {
-              imageUrl: url
-            }
-          })
-          this.file = null;
+          setTimeout(() => {
+            this.updateProduct({
+              product: this.product,
+              newProduct: {
+                imageUrl: url
+              }
+            })
+            this.file = null;
+          }, 5000);
         })
       });
       
