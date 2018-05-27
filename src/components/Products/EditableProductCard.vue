@@ -7,7 +7,7 @@
       <!-- <span>Drag a file or</span> -->
       <span class="btn-blue">Select File</span>
     </div>
-    <input type="file" :disabled="!isEditing" @change="previewImage" v-validate="{'image': true}" accept="image/*" class="hidden">
+    <input type="file" :disabled="!isEditing" @change="previewImage" name="image" v-validate="{'image': true}" accept="image/*" class="hidden">
   </label>
   <div class="mt-auto px-4 py-4 flex items-center">
     <span v-if="!isEditing" class="text-2xl">{{p.name}}</span>
@@ -133,7 +133,7 @@ export default {
     },
     toggleActive() {
       this.$validator.validateAll().then(valid => {
-        if (valid && p.price > 0) {
+        if (valid && this.p.price > 0) {
           this.toggleActiveState(this.product)      
         }
       })
