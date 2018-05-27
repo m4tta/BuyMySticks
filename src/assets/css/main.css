@@ -71,10 +71,10 @@
 }
 
 .btn-outline-black {
-  @apply .bg-transparent text-black .border .border-black .py-2 .px-4 .rounded .text-white .btn-transition;
+  @apply .bg-transparent text-black .border .border-black .py-2 .px-4 .rounded .btn-transition;
 }
 .btn-outline-black:hover {
-  @apply .bg-black text-white;
+  @apply .bg-grey-darkest text-white;
 }
 
 /* Input */
