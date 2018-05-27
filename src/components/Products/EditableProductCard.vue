@@ -7,7 +7,7 @@
       <!-- <span>Drag a file or</span> -->
       <span class="btn-blue">Select File</span>
     </div>
-    <input type="file" :disabled="!isEditing" @change="previewImage" class="hidden">
+    <input type="file" :disabled="!isEditing" @change="previewImage" v-validate="{'image': true}" accept="image/*" class="hidden">
   </label>
   <div class="mt-auto px-4 py-4 flex items-center">
     <span v-if="!isEditing" class="text-2xl">{{p.name}}</span>
