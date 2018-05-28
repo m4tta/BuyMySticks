@@ -28,9 +28,9 @@ export default {
     StripeLogo
   },
   computed: {
-    ...mapState(['activeProducts']),
+    ...mapState(['products']),
     randomProduct() {
-      return _.sample(this.activeProducts)
+      return _.sample(this.products.active)
     }
   }
 }

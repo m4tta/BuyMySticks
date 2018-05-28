@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: 'login',
   data() {
@@ -37,10 +39,14 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['signInWithPass']),
     login() {
       this.$validator.validateAll().then(valid => {
         if (valid) {
-          
+          this.signInWithPass({
+            email: this.email,
+            password: this.password
+          })
         }
       })
 

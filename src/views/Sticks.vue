@@ -2,7 +2,7 @@
 <div class="flex flex-col bg-green-light w-full min-h-screen">
   <Header />
   <div class="grid px-16">
-    <product-card v-for="(product, index) in activeProducts" :key="index" :product=product />
+    <product-card v-for="(product, index) in products.active" :key="index" :product=product />
   </div>
 </div>
 </template>
@@ -21,7 +21,7 @@ export default {
     ProductCard
   },
   computed: {
-    ...mapState(['activeProducts'])
+    ...mapState(['products'])
   },
 }
 </script>

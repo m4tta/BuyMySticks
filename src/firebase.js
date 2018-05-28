@@ -15,7 +15,14 @@ let config = {
 
 firebase.initializeApp(config)
 const db = firebase.firestore()
-const storage = firebase.storage()
 db.settings({ timestampsInSnapshots: true })
 
-export { db, storage, firebase };
+const storage = firebase.storage()
+const auth = firebase.auth()
+const fieldValue = firebase.FieldValue
+
+// Collections
+const productsCollection = db.collection('products')
+const usersCollection = db.collection('users')
+
+export { db, storage, auth, productsCollection, usersCollection, firebase };

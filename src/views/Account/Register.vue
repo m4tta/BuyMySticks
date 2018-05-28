@@ -56,18 +56,10 @@ export default {
     register() {
       this.$validator.validateAll().then(valid => {
         if (valid) {
-          firebase.auth()
-            .createUserWithEmailAndPassword(this.email, this.password)
-            .then(user => {
-              console.log(user)
-              this.accountCreatedSuccess = true
-            })
-            .catch(error => {
-              // Handle Errors here.
-              var errorCode = error.code;
-              var errorMessage = error.message;
-              console.log(error)
-            })
+          this.createUserWithEmailAndPassword({
+            email: this.email,
+            password: this.password
+          })
         }
       })
 

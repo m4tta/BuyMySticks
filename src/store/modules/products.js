@@ -1,13 +1,11 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import _ from 'lodash'
-import firebase from 'firebase/app'
 import { firebaseAction } from 'vuexfire'
 
-import { db } from '../../firebase'
+import { productsCollection, firebase } from '../../firebase'
 
-const products = db.collection('products')
-const activeProducts = products.where('isActive', '==', true)
+const activeProducts = productsCollection.where('isActive', '==', true)
 
 // Product Scheme
 // {
@@ -39,20 +37,18 @@ const getters = {
 
 const actions = {
   init: firebaseAction(({ bindFirebaseRef }) => {
-    bindFirebaseRef('all', products)
+    bindFirebaseRef('all', productsCollection)
     bindFirebaseRef('active', activeProducts)
-    // bindFirebaseRef('orders', orders)
-    // bindFirebaseRef('messages', messages)
   }),
   toggleActiveState({}, product) {
-    products.doc(product.id).update({isActive: !product.isActive})
+    productsCollection.doc(product.id).update({isActive: !product.isActive})
   },
   destroyProduct({}, product) {
-    products.doc(product.id).delete()
+    productsCollection.doc(product.id).delete()
   },
   updateProduct({}, {product, newProduct}) {
     newProduct = {...newProduct, updatedAt: firebase.firestore.FieldValue.serverTimestamp()}
-    products.doc(product.id).update(newProduct)
+    productsCollection.doc(product.id).update(newProduct)
   },
   addProduct({}, newProduct) {
     newProduct = {
@@ -65,7 +61,7 @@ const actions = {
       createdAt: firebase.firestore.FieldValue.serverTimestamp(),
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
     }
-    products.add(newProduct)
+    productsCollection.add(newProduct)
   },
 }
 

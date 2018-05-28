@@ -1,7 +1,35 @@
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write;
+    match /products/{productId} {
+      allow read;
+      allow write: if getRole('admin');
+    }
+    match /users/{userId} {
+      allow read: if isOwner(userId);
+      allow write: if isOwner(userId) || getRole('admin');
+    }
+    
+    /// Functions ///
+    
+    function existingData() {
+    	return resource.data;
+    }
+    
+    function incomingData() {
+    	return request.resource.data;
+    }
+    
+    function isSignedIn() {
+    	return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+    	return request.auth.uid == userId;
+    }
+    
+    // user has role
+    function getRole(role) {
+      return role in get(/databases/$(database)/documents/users/$(request.auth.uid)).data.roles
     }
   }
 }

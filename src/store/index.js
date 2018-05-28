@@ -1,21 +1,18 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import _ from 'lodash'
-import firebase from 'firebase/app'
 import { firebaseMutations, firebaseAction } from 'vuexfire'
-
-import { db } from '../firebase'
-
-const orders = db.collection('orders')
-const messages = db.collection('messages')
+import * as fb from '../firebase'
 
 import products from './modules/products'
+import user from './modules/user'
 
 Vue.use(Vuex)
 
-export default new Vuex.Store({
+const store = new Vuex.Store({
   modules: {
-    products
+    user,
+    products,
   },
   state: {
     searchQuery: '',
@@ -39,22 +36,15 @@ export default new Vuex.Store({
     bindRef: firebaseAction(({ bindFirebaseRef }, { name, ref }) => {
       bindFirebaseRef(name, ref)
     }),
-    signInWithPass({commit, dispatch}, credentials) {
-
-    },
-    signOut({commit, dispatch}) {
-
-    },
   }
 })
 
-// Orders scheme
-// {
-//   orderNumber: 0,
-//   customerName: 'Longname Longington',
-//   customerEmail: 'matt@email.com',
-//   orderedAt: '5/5/5 5:55PM',
-//   isPaid: true,
-//   isShipped: false,
-//   productId: 1
-// }
+fb.auth.onAuthStateChanged(user => {
+  if (user) {
+    store.commit('SET_CURRENT_USER', user)
+    store.dispatch('fetchUserProfile')
+  }
+})
+
+
+export default store

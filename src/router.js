@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { auth } from './firebase'
 
 import Landing from '@/views/Landing.vue'
 import Sticks from '@/views/Sticks.vue'
@@ -17,7 +18,8 @@ import Register from '@/views/Account/Register.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
+  mode: 'history',
   routes: [
     {
       path: '',
@@ -37,6 +39,7 @@ export default new Router({
     {
       path: '/dashboard',
       component: Dashboard,
+      meta: { auth: true },
       children: [
         {
           path: '',
@@ -80,3 +83,16 @@ export default new Router({
     },
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  const requiresAuth = to.matched.some(record => record.meta.auth);
+  const currentUser = auth.currentUser
+
+  if (requiresAuth && !currentUser) {
+    next('login')
+  } else {
+    next()
+  }
+})
+
+export default router
