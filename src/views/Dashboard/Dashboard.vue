@@ -2,11 +2,6 @@
 <div class="h-full">
   <div class="py-1 h-20 bg-blue flex items-center fixed w-full"> <!-- Nav/search -->
     <router-link to="/" class="flex md:w-1/3 lg:w-1/4"><img src="@/assets/logo.svg" alt="Buy My Sticks" class="h-16 ml-8"></router-link>
-    <form @submit.prevent="search" class="flex w-full py-6 pr-4 md:pr-8 lg:px-32 ml-6">
-      <svg class="h-6 my-auto -mr-8 z-10 text-grey fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path class="a" d="M15.751,17.48a9.769,9.769,0,1,1,1.72-1.721L24,22.266,22.267,24l-6.5-6.52ZM9.772,17.09a7.324,7.324,0,1,0-5.177-2.146A7.317,7.317,0,0,0,9.772,17.09Z"/></svg>
-      <input type="text" v-model="searchQuery" class="bg-white rounded w-full pl-12 text-lg leading-none" placeholder="Search by order #, name, email">
-      <button type="submit" class="ml-4 py-2 px-4 text-lg btn-outline-white">Search</button>
-    </form>
   </div> <!-- Nav/search -->
   <div class="flex pt-20 flex-col md:flex-row"> <!-- content -->
     <div class="w-full md:w-1/3 lg:w-1/5 flex flex-col bg-white-pure h-full md:fixed"> <!-- left col -->

@@ -1,5 +1,12 @@
 <template>
 <div>
+    <form @submit.prevent="search" class="relative flex w-full py-6">
+      <div class="absolute pin-y pin-l flex items-center pl-3">
+        <svg class="h-6 z-10 text-grey fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path class="a" d="M15.751,17.48a9.769,9.769,0,1,1,1.72-1.721L24,22.266,22.267,24l-6.5-6.52ZM9.772,17.09a7.324,7.324,0,1,0-5.177-2.146A7.317,7.317,0,0,0,9.772,17.09Z"/></svg>
+      </div>
+      <input type="text" v-model="searchQuery" class="bg-white-pure rounded border border-blue w-full pl-12 text-lg leading-none" placeholder="Search by order #, name, email">
+      <button type="submit" class="ml-4 py-2 px-4 text-lg btn-blue">Search</button>
+    </form>
     <div class="flex mb-4 text-xl">
         <div class="flex">
             <label class="mr-6 flex">
