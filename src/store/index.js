@@ -6,6 +6,7 @@ import * as fb from '../firebase'
 
 import products from './modules/products'
 import user from './modules/user'
+import orders from './modules/orders'
 
 Vue.use(Vuex)
 
@@ -13,18 +14,12 @@ const store = new Vuex.Store({
   modules: {
     user,
     products,
+    orders,
   },
   state: {
-    searchQuery: '',
-    searchedOrders: [],
-    orders: [],
     messages: [],
-    user: {},
   },
   getters: {
-    pendingOrders: state => {
-      return state.orders.filter(order => !(order.isPaid && order.isShipped)).length
-    },
     unreadMessages: state => {
       return state.messages.length
     },
@@ -45,6 +40,5 @@ fb.auth.onAuthStateChanged(user => {
     store.dispatch('fetchUserProfile')
   }
 })
-
 
 export default store
