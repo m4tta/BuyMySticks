@@ -4,7 +4,7 @@
       <div class="absolute pin-y pin-l flex items-center pl-3">
         <svg class="h-6 z-10 text-grey fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path class="a" d="M15.751,17.48a9.769,9.769,0,1,1,1.72-1.721L24,22.266,22.267,24l-6.5-6.52ZM9.772,17.09a7.324,7.324,0,1,0-5.177-2.146A7.317,7.317,0,0,0,9.772,17.09Z"/></svg>
       </div>
-      <input type="text" v-model="searchQuery" class="bg-white-pure rounded border border-blue w-full pl-12 text-lg leading-none" placeholder="Search by order #, name, email">
+      <input type="text" v-model.trim="searchQuery" class="bg-white-pure rounded border border-blue w-full pl-12 text-lg leading-none" placeholder="Search by order #, name, email">
       <button type="submit" class="ml-4 py-2 px-4 text-lg btn-blue">Search</button>
     </form>
     <div class="flex mb-4 text-xl">
@@ -42,6 +42,7 @@
 
 import Order from '@/components/Order.vue'
 
+import _ from 'lodash'
 import { mapState } from 'vuex'
 
 export default {
@@ -49,7 +50,8 @@ export default {
   data () {
     return {
       showPaidOnly: false,
-      hideCompleted: false
+      hideCompleted: false,
+      searchQuery: '',
     }
   },
   components: {
@@ -58,13 +60,25 @@ export default {
   computed: {
     ...mapState(['orders']),
     filteredOrders: function (state) {
-      let orders = state.orders
+      let orders = state.orders.all
       if (this.showPaidOnly) {
         orders = orders.filter(order => order.isPaid)
       }
       if (this.hideCompleted) {
         orders = orders.filter(order => !(order.isPaid && order.isShipped))
       }
+      if (this.searchQuery.length > 0) {
+        orders = orders.filter(o => {
+          let wasFound = false;
+          Object.keys(o).forEach(key => {
+            if (_.includes(o[key].toString().toLowerCase(), this.searchQuery.toLowerCase())) {
+              return wasFound = true
+            }
+          })
+          return wasFound
+        })
+      }
+      
       return orders
     }
   }
