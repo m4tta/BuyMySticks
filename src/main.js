@@ -11,12 +11,11 @@ Vue.config.productionTip = false
 
 import './assets/css/main.css'
 
+// Should ensure our user is loaded before loading the app.
 fb.auth.onAuthStateChanged(user => {
-  if (user) {
-    new Vue({
-      router,
-      store,
-      render: h => h(App)
-    }).$mount('#app')
-  }
+  new Vue({
+    router,
+    store,
+    render: h => h(App)
+  }).$mount('#app')
 })
