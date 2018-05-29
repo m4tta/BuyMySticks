@@ -1,7 +1,11 @@
 <template>
 <div class="h-full">
-  <div class="py-1 h-20 bg-blue flex items-center fixed w-full"> <!-- Nav/search -->
-    <router-link to="/" class="flex md:w-1/3 lg:w-1/4"><img src="@/assets/logo.svg" alt="Buy My Sticks" class="h-16 ml-8"></router-link>
+  <div class="py-1 px-8 h-20 bg-blue flex items-center fixed w-full"> <!-- Nav/search -->
+    <router-link to="/" class="flex md:w-1/3 lg:w-1/4"><img src="@/assets/logo.svg" alt="Buy My Sticks" class="h-16"></router-link>
+    <div class="ml-auto mr-24">
+      <span class="text-white text-lg mr-4">Hello, {{user.userProfile.firstName}}</span>
+      <button @click="logOut" class="btn-outline-white">Log Out</button>
+    </div>
   </div> <!-- Nav/search -->
   <div class="flex pt-20 flex-col md:flex-row"> <!-- content -->
     <div class="w-full md:w-1/3 lg:w-1/5 flex flex-col bg-white-pure h-full md:fixed"> <!-- left col -->
@@ -43,7 +47,7 @@
 <script>
 // @ is an alias to /src
 
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions, mapState } from 'vuex'
 
 export default {
   name: 'dashboard',
@@ -52,19 +56,22 @@ export default {
       'pendingOrders',
       'activeProducts',
       'unreadMessages',
-    ])
+    ]),
+    ...mapState(['user'])
   },
   methods: {
-    search: function () {
-      // perform search
-      // somehow change the orders list in state that will bubble down to the Orders component
+    ...mapActions(['signOut']),
+    logOut() {
+      this.signOut().then(() => {
+        this.$router.push('/')
+      })
     }
   }
 }
 </script>
 
 <style scoped>
-button, .link {
+.link {
   transition: all 0.15s linear;
 }
 </style>

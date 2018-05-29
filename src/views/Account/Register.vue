@@ -33,7 +33,7 @@
       </label>
     </div>
     <div class="px-4 pb-4 flex justify-between">
-      <router-link tag="button" to="login" class="btn-outline-black">Back to login</router-link>
+      <router-link tag="a" to="login" class="btn-outline-black">Back to login</router-link>
       <button :disabled=accountCreatedSuccess type="submit" class="btn-green ml-6">Register</button>
     </div>
   </form>
@@ -59,6 +59,8 @@ export default {
           this.createUserWithEmailAndPassword({
             email: this.email,
             password: this.password
+          }).then(() => {
+            this.$router.push('/')
           })
         }
       })

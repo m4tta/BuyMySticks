@@ -31,6 +31,11 @@ const getters = {
     if (state.currentUser) {
       return state.currentUser.uid
     }    
+  },
+  userHasRole(state) {
+    return (role) => {
+      return _.includes(state.userProfile.roles, role)
+    }
   }
 }
 
@@ -39,28 +44,45 @@ const actions = {
     // bindFirebaseRef('messages', messages)
   }),
   createUserWithEmailAndPassword({commit, dispatch}, credentials) {
-    auth.createUserWithEmailAndPassword(credentials.email, credentials.password)
-    .catch(error => {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      console.log(error)
-    })
+    return new Promise((resolve, reject) => {
+      auth.createUserWithEmailAndPassword(credentials.email, credentials.password)
+      .then(() => {
+        resolve
+      })
+      .catch(error => {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.error(error)
+        reject()
+      })
+    });
   },
   signInWithPass({commit, dispatch}, credentials) {
-    auth.signInWithEmailAndPassword(credentials.email, credentials.password)
-    .catch(error => {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      console.log(error)
+    return new Promise((resolve, reject) => {
+      auth.signInWithEmailAndPassword(credentials.email, credentials.password)
+      .then(() => {
+        resolve()
+      })
+      .catch(error => {
+        // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+        console.error(error)
+        reject()
+      })
     })
   },
   signOut({commit, dispatch}) {
-    auth.signOut().then(function() {
-      // commit('SIGN_OUT')
-    }, function(error) {
-      console.error('Sign Out Error', error);
+    return new Promise((resolve, reject) => {
+      auth.signOut().then(function() {
+        console.log('Signing out');
+        // commit('SIGN_OUT')
+        resolve()
+      }, function(error) {
+        console.error('Sign Out Error', error);
+        reject()
+      });
     });
   },
   fetchUserProfile({commit, dispatch, state, getters}) {

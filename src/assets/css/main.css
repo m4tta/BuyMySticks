@@ -43,35 +43,35 @@
 }
 
 .btn-blue {
-  @apply .bg-blue .text-white .py-2 .px-4 .rounded .btn-transition;
+  @apply .bg-blue .text-white .py-2 .px-4 .rounded .no-underline .btn-transition;
 }
 .btn-blue:hover {
   @apply .bg-blue-dark;
 }
 
 .btn-green {
-  @apply .bg-green .text-white .py-2 .px-4 .rounded .btn-transition;
+  @apply .bg-green .text-white .py-2 .px-4 .rounded .no-underline .btn-transition;
 }
 .btn-green:hover {
   @apply .bg-green-dark;
 }
 
 .btn-red {
-  @apply .bg-red .text-white .py-2 .px-4 .rounded .btn-transition;
+  @apply .bg-red .text-white .py-2 .px-4 .rounded .no-underline .btn-transition;
 }
 .btn-red:hover {
   @apply .bg-red-dark;
 }
 
 .btn-outline-white {
-  @apply .bg-transparent text-white .border .border-white .py-2 .px-4 .rounded .text-white .btn-transition;
+  @apply .bg-transparent text-white .border .border-white .py-2 .px-4 .rounded .no-underline .text-white .btn-transition;
 }
 .btn-outline-white:hover {
   @apply .bg-white-pure text-black;
 }
 
 .btn-outline-black {
-  @apply .bg-transparent text-black .border .border-black .py-2 .px-4 .rounded .btn-transition;
+  @apply .bg-transparent text-black .border .border-black .py-2 .px-4 .rounded .no-underline .btn-transition;
 }
 .btn-outline-black:hover {
   @apply .bg-grey-darkest text-white;

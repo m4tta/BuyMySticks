@@ -21,14 +21,14 @@
       </label>
     </div>
     <div class="px-4 pb-4 flex justify-between">
-      <router-link tag="button" to="register" class="btn-outline-black">Register</router-link>
+      <router-link tag="a" to="register" class="btn-outline-black">Register</router-link>
       <button type="submit" class="btn-green">Login</button>
     </div>
   </form>
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'login',
@@ -38,6 +38,9 @@ export default {
       password: '',
     }
   },
+  computed: {
+    ...mapGetters(['userHasRole'])
+  },
   methods: {
     ...mapActions(['signInWithPass']),
     login() {
@@ -46,6 +49,10 @@ export default {
           this.signInWithPass({
             email: this.email,
             password: this.password
+          }).then(() => {
+            if (this.userHasRole('admin')) {
+              this.$router.push('/dashboard')
+            }
           })
         }
       })
