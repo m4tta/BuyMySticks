@@ -24,5 +24,6 @@ const fieldValue = firebase.FieldValue
 // Collections
 const productsCollection = db.collection('products')
 const usersCollection = db.collection('users')
+const ordersCollection = db.collection('orders')
 
-export { db, storage, auth, productsCollection, usersCollection, firebase };
+export { db, storage, auth, productsCollection, usersCollection, ordersCollection, firebase };

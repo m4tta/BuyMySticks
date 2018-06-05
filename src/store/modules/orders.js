@@ -18,42 +18,42 @@ import { ordersCollections, firebase } from '../../firebase'
 
 const state = {
   all: [
-    {
-      orderNumber: 0,
-      customerName: 'Longname Longington',
-      customerEmail: 'matt@email.com',
-      orderedAt: '5/5/5 5:55PM',
-      isPaid: true,
-      isShipped: false,
-      productId: 1
-    },
-    {
-      orderNumber: 0,
-      customerName: 'Longname Longington',
-      customerEmail: 'matt@email.com',
-      orderedAt: '5/5/5 5:55PM',
-      isPaid: true,
-      isShipped: false,
-      productId: 1
-    },
-    {
-      orderNumber: 0,
-      customerName: 'Longname Longington',
-      customerEmail: 'matt@email.com',
-      orderedAt: '5/5/5 5:55PM',
-      isPaid: true,
-      isShipped: false,
-      productId: 1
-    },
-    {
-      orderNumber: 0,
-      customerName: 'Longname Longington',
-      customerEmail: 'matt@email.com',
-      orderedAt: '5/5/5 5:55PM',
-      isPaid: true,
-      isShipped: false,
-      productId: 1
-    },
+    // {
+    //   orderNumber: 0,
+    //   customerName: 'Longname Longington',
+    //   customerEmail: 'matt@email.com',
+    //   orderedAt: '5/5/5 5:55PM',
+    //   isPaid: true,
+    //   isShipped: false,
+    //   productId: 1
+    // },
+    // {
+    //   orderNumber: 0,
+    //   customerName: 'Longname Longington',
+    //   customerEmail: 'matt@email.com',
+    //   orderedAt: '5/5/5 5:55PM',
+    //   isPaid: true,
+    //   isShipped: false,
+    //   productId: 1
+    // },
+    // {
+    //   orderNumber: 0,
+    //   customerName: 'Longname Longington',
+    //   customerEmail: 'matt@email.com',
+    //   orderedAt: '5/5/5 5:55PM',
+    //   isPaid: true,
+    //   isShipped: false,
+    //   productId: 1
+    // },
+    // {
+    //   orderNumber: 0,
+    //   customerName: 'Longname Longington',
+    //   customerEmail: 'matt@email.com',
+    //   orderedAt: '5/5/5 5:55PM',
+    //   isPaid: true,
+    //   isShipped: false,
+    //   productId: 1
+    // },
   ],
 }
 
@@ -68,9 +68,9 @@ const getters = {
 }
 
 const actions = {
-  // init: firebaseAction(({ bindFirebaseRef }) => {
-  //   bindFirebaseRef('all', ordersCollections)
-  // }),
+  init: firebaseAction(({ bindFirebaseRef }) => {
+    // bindFirebaseRef('all', ordersCollections)
+  }),
 }
 
 export default {

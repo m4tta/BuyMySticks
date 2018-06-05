@@ -5,6 +5,7 @@ import { auth } from './firebase'
 import Landing from '@/views/Landing.vue'
 import Sticks from '@/views/Sticks.vue'
 import Contact from '@/views/Contact.vue'
+import Checkout from '@/views/Checkout.vue'
 
 import Dashboard from '@/views/Dashboard/Dashboard.vue'
 import Inventory from '@/views/Dashboard/Inventory.vue'
@@ -35,6 +36,11 @@ const router = new Router({
       path: '/contact',
       name: 'contact',
       component: Contact
+    },
+    {
+      path: '/checkout',
+      name: 'checkout',
+      component: Checkout
     },
     {
       path: '/dashboard',
@@ -89,7 +95,7 @@ router.beforeEach((to, from, next) => {
   const currentUser = auth.currentUser
 
   if (requiresAuth && !currentUser) {
-    next('login')
+    next('/account')
   } else {
     next()
   }
