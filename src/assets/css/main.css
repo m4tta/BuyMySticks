@@ -79,10 +79,26 @@
 
 /* Input */
 
-.input {
-  @apply .bg-grey-lighter .border .border-grey-light .rounded
+/* remember to define focus styles! */
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
 }
- 
+
+.input {
+  @apply .bg-white-pure .border .border-grey-light .rounded
+}
+
+.input {
+  transition: box-shadow 150ms ease;
+}
+
+.input:focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
  /**
   * This injects all of Tailwind's utility classes, generated based on your
   * config file.

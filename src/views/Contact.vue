@@ -6,22 +6,22 @@
           <div class="flex flex-col md:flex-row mb-4">
             <label class="flex flex-col w-full md:w-1/2 mb-4 md:mb-0">
               <span class="uppercase  text-lg font-semibold tracking-wider mb-1">email</span>
-              <input  v-model="email" type="text" class="bg-grey-lighter border border-grey-light rounded px-4 py-2 md:mr-4">
+              <input  v-model="email" type="text" class="input px-4 py-2 md:mr-4">
             </label>
             <label class="flex flex-col w-full md:w-1/2">
               <div class="flex">
                 <span class="uppercase  text-lg font-semibold tracking-wider mb-1">order #</span>
                 <span class="text-xs ml-auto my-auto text-grey-darker">Optional</span>
               </div>
-              <input v-model="orderNumber" type="text" class="bg-grey-lighter border border-grey-light rounded px-4 py-2">
+              <input v-model="orderNumber" type="text" class="input px-4 py-2">
             </label>
           </div>
           <div class="flex mb-4">
             <label class="flex flex-col w-48">
               <span class="uppercase text-lg font-semibold tracking-wider mb-1">subject</span>
-              <!-- <input v-model="subject" type="text" class="bg-grey-lighter border border-grey-light rounded px-4 py-2 mr-4"> -->
+              <!-- <input v-model="subject" type="text" class="input px-4 py-2 mr-4"> -->
               <div class="relative">
-                <select class="appearance-none w-full bg-grey-lighter border border-grey-light text-grey-darker px-4 py-2 pr-8 rounded" id="grid-state">
+                <select class="input appearance-none w-full px-4 py-2 pr-8 rounded">
                   <option>General</option>
                   <option>Payments</option>
                   <option>Shipping</option>
@@ -35,7 +35,7 @@
           <div class="mb-4">
             <label class="flex flex-col w-full">
               <span class="uppercase  text-lg font-semibold tracking-wider mb-1">message</span>
-              <textarea v-model="message" class="w-full h-64 bg-grey-lighter border border-grey-light rounded px-4 py-2 resize-none"></textarea>
+              <textarea v-model="message" class="w-full h-64 input px-4 py-2 resize-none"></textarea>
             </label>
             <span class="text-sm float-right mt-1">{{remainingCharacters}}</span>
           </div>
