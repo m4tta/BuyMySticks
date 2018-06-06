@@ -18,11 +18,11 @@
   </div>
   <div class="h-px bg-grey-light w-full"></div>
   <div class="px-4 py-4">
-    <button 
-      @click="buy" 
+    <router-link tag="button"
+      :to="{path: '/checkout/' + product.id}"
       :disabled="product.stock < 1" 
-      class="w-full px-6 py-3 text-3xl text-white" 
-      v-bind:class="{'bg-green-lighter': product.stock < 1, 'btn-green': product.stock > 0, 'cursor-not-allowed': product.stock < 1}">Buy Now</button>
+      class="block text-center w-full px-6 py-3 text-3xl text-white no-underline" 
+      v-bind:class="{'bg-green-lighter': product.stock < 1, 'btn-green': product.stock > 0, 'cursor-not-allowed': product.stock < 1}">Buy Now</router-link>
   </div>
 </div>
 </template>
@@ -39,10 +39,6 @@ export default {
     }
   },
   methods: {
-    buy() {
-      console.log('buying a stick');
-      
-    }
   }
 }
 </script>
