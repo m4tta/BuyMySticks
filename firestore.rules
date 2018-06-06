@@ -5,8 +5,13 @@ service cloud.firestore {
       allow write: if getRole('admin');
     }
     match /users/{userId} {
-      allow read: if isOwner(userId);
+      allow read: if isOwner(userId) || getRole('admin');
       allow write: if isOwner(userId) || getRole('admin');
+    }
+    match /orders/{document=**} {
+      allow read;
+      
+      allow write: if getRole('admin');
     }
     
     /// Functions ///
