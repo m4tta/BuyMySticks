@@ -5,7 +5,13 @@
     <div class="flex flex-col items-center h-full sm:py-16">
       <div class="md:w-2/3 xl:w-2/5 shadow-lg bg-white rounded flex flex-col flex-none">
         <div class="sm:flex py-4 px-4 sm:px-8 justify-between items-center">
-          <h1>Checkout</h1>
+          <div>
+            <h1>Checkout</h1>
+            <div class="flex flex-col" v-if="errors.any()">
+              <h4>Errors</h4>
+              <span class="text-xs text-red" v-for="(error, index) in errors.all()" :key="index">{{error}}</span>
+            </div>
+          </div>
           <div class="flex">
             <div class="flex flex-col justify-between">
               <div class="flex flex-col">
@@ -30,16 +36,16 @@
           <div class="sm:flex">
             <label class="flex flex-col sm:w-1/2">
               <span class="mb-1 text-sm">First Name</span>
-              <input type="text" class="input px-3 py-3" name="firstName" v-model="firstName" placeholder="Jane">
+              <input type="text" class="input px-3 py-3" :class="{'border-red': errors.first('firstName')}" v-validate="{'required': true}" name="firstName" v-model="firstName" placeholder="Jane">
             </label>
             <label class="flex flex-col mt-4 sm:mt-0 sm:w-1/2 sm:ml-8">
               <span class="mb-1 text-sm">Last Name</span>
-              <input type="text" class="input px-3 py-3" name="lastName" v-model="lastName" placeholder="Doe">
+              <input type="text" class="input px-3 py-3" :class="{'border-red': errors.first('lastName')}" v-validate="{'required': true}" name="lastName" v-model="lastName" placeholder="Doe">
             </label>
           </div>
           <label class="flex flex-col sm:w-3/4 mt-4">
             <span class="mb-1 text-sm">Email</span>
-            <input type="email" class="input px-3 py-3" name="email" v-model="email" placeholder="JaneDoe@example.com">
+            <input type="email" class="input px-3 py-3" :class="{'border-red': errors.first('email')}" v-validate="{'required': true, 'email': true}" name="email" v-model="email" placeholder="JaneDoe@example.com">
           </label>
         </div>
         <div class="h-px w-full bg-grey-light my-2"/>
@@ -75,17 +81,17 @@
           </div>
           <label class="flex flex-col">
             <span class="mb-1 text-sm">Street Address</span>
-            <input type="text" class="input px-3 py-3" name="address" v-model="address" placeholder="123 Broadway">
+            <input type="text" class="input px-3 py-3" :class="{'border-red': errors.first('street')}" v-validate="{'required': true, 'min': 5}" name="street" v-model="street" placeholder="123 Broadway">
           </label>
           <div class="sm:flex mt-4 justify-between">
             <label class="flex flex-col sm:w-1/3">
               <span class="mb-1 text-sm">City</span>
-              <input type="text" class="input px-3 py-3" name="city" v-model="city" placeholder="New York">
+              <input type="text" class="input px-3 py-3" :class="{'border-red': errors.first('city')}" v-validate="{'required': true, 'min': 4}" name="city" v-model="city" placeholder="New York">
             </label>
             <label class="flex flex-col mt-4 sm:mt-0 sm:w-1/3 sm:ml-4">
               <span class="mb-1 text-sm">State</span>
               <div class="relative">
-                <select name="state" v-model="state" class="appearance-none bg-white-pure border border-grey-light text-grey-darker px-3 py-3 pr-8 rounded w-full">
+                <select name="state" v-model="state" :class="{'border-red': errors.first('state')}" v-validate="{'required': true}" class="appearance-none bg-white-pure border border-grey-light text-grey-darker px-3 py-3 pr-8 rounded w-full">
                   <option v-for="(state, index) in states" :key="index">{{state}}</option>
                 </select>
                 <div class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-grey-darker">
@@ -95,7 +101,7 @@
             </label>
             <label class="flex flex-col mt-4 sm:mt-0 sm:w-1/3 sm:ml-4">
               <span class="mb-1 text-sm">Zip Code</span>
-              <input type="text" class="input px-3 py-3" name="zipcode" v-model="zipcode" placeholder="10001">
+              <input type="text" class="input px-3 py-3" v-mask="'#####-####'" :class="{'border-red': errors.first('zipcode')}" maxlength="10" v-validate="{'required': true, 'min': 5}" name="zipcode" v-model="zipcode" placeholder="10001">
             </label>
           </div>
         </div>
