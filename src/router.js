@@ -6,6 +6,7 @@ import Landing from '@/views/Landing.vue'
 import Sticks from '@/views/Sticks.vue'
 import Contact from '@/views/Contact.vue'
 import Checkout from '@/views/Checkout.vue'
+import NotFound from '@/views/NotFound.vue'
 
 import Dashboard from '@/views/Dashboard/Dashboard.vue'
 import Inventory from '@/views/Dashboard/Inventory.vue'
@@ -38,10 +39,17 @@ const router = new Router({
       component: Contact
     },
     {
-      path: '/checkout',
+      path: '/checkout/:productId',
       name: 'checkout',
-      component: Checkout
+      component: Checkout,
+      props: true
     },
+    // {
+    //   path: '/order/:orderId',
+    //   name: 'order',
+    //   component: Order,
+    //   props: true
+    // },
     {
       path: '/dashboard',
       component: Dashboard,
@@ -86,6 +94,11 @@ const router = new Router({
           component: Register
         }
       ]
+    },
+    {
+      path: '*',
+      name: 'notFound',
+      component: NotFound
     },
   ]
 })

@@ -3,28 +3,33 @@
   <Header />
   <div class="flex flex-col bg-green-light w-full">
     <div class="flex flex-col items-center h-full sm:py-16">
-      <div class="md:w-2/3 xl:w-2/5 shadow-lg bg-white rounded flex flex-col flex-none">
+      <div v-show="!productExists" class="md:w-2/3 xl:w-2/5 shadow-lg bg-white rounded flex flex-col flex-none">
+        <h1>Product does not exist!</h1>
+      </div>
+      <div v-show="productExists" class="md:w-2/3 xl:w-2/5 shadow-lg bg-white rounded flex flex-col flex-none">
         <div class="sm:flex py-4 px-4 sm:px-8 justify-between items-center">
           <div>
             <h1>Checkout</h1>
             <div class="flex flex-col" v-if="errors.any()">
-              <h4>Errors</h4>
+              <h4>Checkout Errors:</h4>
               <span class="text-xs text-red" v-for="(error, index) in errors.all()" :key="index">{{error}}</span>
             </div>
           </div>
           <div class="flex">
             <div class="flex flex-col justify-between">
               <div class="flex flex-col">
-                <span>Items:</span>
-                <span>"The basic stick"</span>
+                <h5>Item(s):</h5>
+                <ul class="p-0 list-reset">
+                  <li>"{{product.name}}"</li>
+                </ul>
               </div>
               <div class="flex">
                 <span class="font-bold self-center mt-auto mr-2">Total Price:</span>
                 <span class="text-lg">$</span>
-                <span class="text-2xl">10</span>
+                <span class="text-2xl">{{totalPrice}}</span>
               </div>
             </div>
-            <div class="ml-6 rounded w-24 h-24 bg-grey"></div>
+            <img :src=thumbnailURL class="ml-6 rounded w-32 min-h-24 bg-grey self-center" alt="A Stick">
           </div>
         </div>
         <div class="h-px w-full bg-grey-light my-2"/>
@@ -107,7 +112,7 @@
         </div>
         <div class="h-px w-full bg-grey-light my-2"/>
         <div class="px-4 sm:px-8 py-4 flex flex-col items-center">
-          <button class="btn-green w-full text-2xl" @click="pay">Pay $10</button>
+          <button :disabled='errors.any()' :class="{'cursor-not-allowed': errors.any()}" class="btn-green w-full text-2xl" @click="pay">Pay ${{totalPrice}}</button>
           <span class="mt-2 text-sm"><b>Need any help?</b> Don't Hesitate to <a href="#" class="text-black">contact support</a>!</span>
         </div>
       </div>
@@ -121,6 +126,7 @@
 import { stripeKey, stripeOptions } from '@/stripeConfig'
 import Header from '@/components/Header.vue'
 import { mapState } from 'vuex'
+import axios from 'axios'
 import _ from 'lodash'
 
 let stripe = Stripe(stripeKey)
@@ -132,20 +138,21 @@ export default {
   components: {
     Header,
   },
-  mounted: function () {
-    card = elements.create('card', {style: this.stripeOptions.style});
-    card.mount(this.$refs.card);
+  props: {
+    productId: String
   },
   data () {
     return {
+      productExists: false,
       firstName: '',
       lastName: '',
       email: '',
-      address: '',
+      street: '',
       city: '',
       state: 'New York',
       zipcode: '',
       
+      cardErrorMessage: '',
       hasCardErrors: false,
       stripeOptions: {
         style: {
@@ -166,8 +173,31 @@ export default {
       },
     }
   },
+  mounted () {
+    card = elements.create('card', {style: this.stripeOptions.style})
+    card.mount(this.$refs.card)
+  },
   computed: {
-    states: () => ["Alaska", "Alabama", "Arkansas", "American Samoa", "Arizona", "California", "Colorado", "Connecticut", "District of Columbia", "Delaware", "Florida", "Georgia", "Guam", "Hawaii", "Iowa", "Idaho", "Illinois", "Indiana", "Kansas", "Kentucky", "Louisiana", "Massachusetts", "Maryland", "Maine", "Michigan", "Minnesota", "Missouri", "Mississippi", "Montana", "North Carolina", " North Dakota", "Nebraska", "New Hampshire", "New Jersey", "New Mexico", "Nevada", "New York", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Puerto Rico", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Virginia", "Virgin Islands", "Vermont", "Washington", "Wisconsin", "West Virginia", "Wyoming"]
+    // ...mapState(['products']),
+    states: () => ["Alaska", "Alabama", "Arkansas", "American Samoa", "Arizona", "California", "Colorado", "Connecticut", "District of Columbia", "Delaware", "Florida", "Georgia", "Guam", "Hawaii", "Iowa", "Idaho", "Illinois", "Indiana", "Kansas", "Kentucky", "Louisiana", "Massachusetts", "Maryland", "Maine", "Michigan", "Minnesota", "Missouri", "Mississippi", "Montana", "North Carolina", " North Dakota", "Nebraska", "New Hampshire", "New Jersey", "New Mexico", "Nevada", "New York", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Puerto Rico", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Virginia", "Virgin Islands", "Vermont", "Washington", "Wisconsin", "West Virginia", "Wyoming"],
+    thumbnailURL() {
+      return this.product.imageUrl.replace('images%2Fproducts%2F', 'images%2Fproducts%2Fthumb_')
+    },
+    product() {
+      const product = _.find(this.$store.state.products.all, {id: this.productId})
+      if (product) {
+        this.productExists = true
+        return product
+      }
+      return {
+        name: 'Loading',
+        price: 0,
+        imageUrl: 'Loading...',
+      }
+    },
+    totalPrice() {
+      return this.product.price
+    }
   },
   methods: {
     pay () {
@@ -175,15 +205,46 @@ export default {
       // See https://stripe.com/docs/api#tokens for the token object.
       // See https://stripe.com/docs/api#errors for the error object.
       // More general https://stripe.com/docs/stripe.js#stripe-create-token.
-
-      stripe.createToken(card).then((result) => {
-        if (result.error) {
-          this.hasCardErrors = true;
-          this.$forceUpdate(); // Forcing the DOM to update so the Stripe Element can update.
-        } else {
-          // we have payment token
+      this.$validator.validateAll().then(valid => {
+        if (valid) {
+          stripe.createToken(card).then((result) => {
+            if (result.error) {
+              console.error(result.error)
+              this.cardErrorMessage = result.error.message
+              this.hasCardErrors = true
+              this.$forceUpdate() // Forcing the DOM to update so the Stripe Element can update.
+            } else {
+              const order = {
+                customer: {
+                  firstName: this.firstName,
+                  lastName: this.lastName,
+                  email: this.email,
+                },
+                address: {
+                  street: this.street,
+                  city: this.city,
+                  state: this.state,
+                  zipcode: this.zipcode,
+                },
+                token: result.token,
+                productId: this.productId
+              }
+              axios.post('http://localhost:5000/buy-my-sticks/us-central1/placeOrder', order)
+                .then(res => {
+                  // redirect to /order/:orderId
+                  // show realtime progress
+                  // email that link to the user
+                  // can track order status all the way through with that
+                  // secret link^^
+                  console.log(res)
+                })
+                .catch(err => {
+                  console.error(err, err.response)
+                })
+            }
+          })
         }
-      });
+      })
     }
   }
 }
