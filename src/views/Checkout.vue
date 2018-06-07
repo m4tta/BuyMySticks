@@ -11,7 +11,6 @@
           <div>
             <h1>Checkout</h1>
             <div class="flex flex-col" v-if="errors.any()">
-              <h4>Checkout Errors:</h4>
               <span class="text-xs text-red" v-for="(error, index) in errors.all()" :key="index">{{error}}</span>
             </div>
           </div>
@@ -96,7 +95,7 @@
             <label class="flex flex-col mt-4 sm:mt-0 sm:w-1/3 sm:ml-4">
               <span class="mb-1 text-sm">State</span>
               <div class="relative">
-                <select name="state" v-model="state" :class="{'border-red': errors.first('state')}" v-validate="{'required': true}" class="appearance-none bg-white-pure border border-grey-light text-grey-darker px-3 py-3 pr-8 rounded w-full">
+                <select name="state" v-model="state" :class="{'border-red': errors.first('state')}" v-validate="{'required': true}" class="input appearance-none bg-white-pure border border-grey-light text-grey-darker px-3 py-3 pr-8 rounded w-full">
                   <option v-for="(state, index) in states" :key="index">{{state}}</option>
                 </select>
                 <div class="pointer-events-none absolute pin-y pin-r flex items-center px-2 text-grey-darker">
@@ -112,7 +111,10 @@
         </div>
         <div class="h-px w-full bg-grey-light my-2"/>
         <div class="px-4 sm:px-8 py-4 flex flex-col items-center">
-          <button :disabled='errors.any()' :class="{'cursor-not-allowed': errors.any()}" class="btn-green w-full text-2xl" @click="pay">Pay ${{totalPrice}}</button>
+          <button :disabled='errors.any() || buyDisabled'
+          class="block text-center w-full px-6 py-3 text-3xl text-white no-underline" 
+          :class="{'bg-green-lighter': errors.any() || buyDisabled, 'btn-green': !errors.any() && !buyDisabled, 'cursor-not-allowed': errors.any() || buyDisabled}" 
+          @click="pay">Pay ${{totalPrice}}</button>
           <span class="mt-2 text-sm"><b>Need any help?</b> Don't Hesitate to <a href="#" class="text-black">contact support</a>!</span>
         </div>
       </div>
@@ -126,7 +128,7 @@
 import { stripeKey, stripeOptions } from '@/stripeConfig'
 import Header from '@/components/Header.vue'
 import { mapState } from 'vuex'
-import axios from 'axios'
+import http from '@/utils/http'
 import _ from 'lodash'
 
 let stripe = Stripe(stripeKey)
@@ -143,6 +145,8 @@ export default {
   },
   data () {
     return {
+      buyDisabled: false,
+
       productExists: false,
       firstName: '',
       lastName: '',
@@ -211,6 +215,7 @@ export default {
       // More general https://stripe.com/docs/stripe.js#stripe-create-token.
       this.$validator.validateAll().then(valid => {
         if (valid) {
+          this.buyDisabled = true;
           stripe.createToken(card).then((result) => {
             if (result.error) {
               console.error(result.error)
@@ -233,14 +238,10 @@ export default {
                 token: result.token,
                 productId: this.productId
               }
-              axios.post('http://localhost:5000/buy-my-sticks/us-central1/placeOrder', order)
+              // axios.post('http://localhost:5000/buy-my-sticks/us-central1/placeOrder', order)
+              http.post('/placeOrder', order)
                 .then(res => {
-                  // redirect to /order/:orderId
-                  // show realtime progress
-                  // email that link to the user
-                  // can track order status all the way through with that
-                  // secret link^^
-                  console.log(res)
+                  this.$router.push({ path: `/order/${res.data.order.id}` })
                 })
                 .catch(err => {
                   console.error(err, err.response)
