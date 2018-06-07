@@ -25,6 +25,10 @@
           </div>
         </div>
         <!-- END progressbar -->
+        <div class="flex flex-col items-center">
+          <span class="mb-1 text-2xl">This is your order status link</span >
+          <input type="text" class="input px-6 py-4 w-full text-center" :value="orderStatusURL">
+        </div>
       </div>
     </div>
   </div>
@@ -52,6 +56,9 @@ export default {
   },
   computed: {
     ...mapState(['orders']),
+    orderStatusURL() {
+      return document.URL
+    },
     currentStep() {
       if (_.hasIn(this.order, 'token.card')) {
         this.step = 1
