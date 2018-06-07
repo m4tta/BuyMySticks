@@ -7,7 +7,7 @@
           :class="{'border-red': errors.first('email')}" 
           v-validate="{'required': true, 'email': true}" 
           v-model="email" 
-          placeholder="Email" name="email" class="input px-4 py-2" type="email">
+          placeholder="Email" name="email" class="input px-4 py-2 leading-normal" type="email">
           <span class="text-sm text-red">{{errors.first('email')}}</span>
       </label>
       <label class="flex flex-col mb-3">
@@ -16,7 +16,7 @@
           :class="{'border-red': errors.first('password')}" 
           v-validate="{'required': true}" 
           v-model="password" 
-          placeholder="Password" name="password" class="input px-4 py-2" type="password">
+          placeholder="Password" name="password" class="input px-4 py-2 leading-normal" type="password">
           <span class="text-sm text-red">{{errors.first('password')}}</span>
       </label>
     </div>
