@@ -199,6 +199,9 @@ export default {
     product() {
       if (this.products && this.products.product) {
         this.productExists = true
+        if (this.products.product.stock < 1) {
+          this.buyDisabled = true
+        }
         return this.products.product
       }
       return {
