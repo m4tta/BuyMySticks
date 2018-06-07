@@ -6,6 +6,7 @@ import Landing from '@/views/Landing.vue'
 import Sticks from '@/views/Sticks.vue'
 import Contact from '@/views/Contact.vue'
 import Checkout from '@/views/Checkout.vue'
+import OrderStatus from '@/views/OrderStatus.vue'
 import NotFound from '@/views/NotFound.vue'
 
 import Dashboard from '@/views/Dashboard/Dashboard.vue'
@@ -44,12 +45,12 @@ const router = new Router({
       component: Checkout,
       props: true
     },
-    // {
-    //   path: '/order/:orderId',
-    //   name: 'order',
-    //   component: Order,
-    //   props: true
-    // },
+    {
+      path: '/order/:orderId',
+      name: 'order',
+      component: OrderStatus,
+      props: true
+    },
     {
       path: '/dashboard',
       component: Dashboard,

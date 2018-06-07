@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import _ from 'lodash'
 import { firebaseAction } from 'vuexfire'
 
-import { ordersCollections, firebase } from '../../firebase'
+import { ordersCollection, firebase } from '../../firebase'
 
 // Orders scheme
 // {
@@ -55,6 +55,7 @@ const state = {
     //   productId: 1
     // },
   ],
+  order: {}
 }
 
 const mutations = {
@@ -69,7 +70,10 @@ const getters = {
 
 const actions = {
   init: firebaseAction(({ bindFirebaseRef }) => {
-    // bindFirebaseRef('all', ordersCollections)
+    bindFirebaseRef('all', ordersCollection)
+  }),
+  setOrder: firebaseAction(({ bindFirebaseRef }, orderId) => {
+    bindFirebaseRef('order', ordersCollection.doc(orderId))
   }),
 }
 
