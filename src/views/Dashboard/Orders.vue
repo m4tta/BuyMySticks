@@ -33,7 +33,7 @@
             </div>
         </div>
     </div>
-    <Order v-for="(order, index) in filteredOrders" :key=index :order=order.orderNumber :productId=order.productId :customer=order.customerName :email=order.customerEmail :time=order.orderedAt :status-payment=order.isPaid :status-shipped=order.isShipped />
+    <Order v-for="(order, index) in filteredOrders" :key=index :order=order />
 </div>
 </template>
 
@@ -65,7 +65,7 @@ export default {
         orders = orders.filter(order => order.isPaid)
       }
       if (this.hideCompleted) {
-        orders = orders.filter(order => !(order.isPaid && order.isShipped))
+        orders = orders.filter(order => !(order.charge.paid && order.isShipped))
       }
       if (this.searchQuery.length > 0) {
         orders = orders.filter(o => {

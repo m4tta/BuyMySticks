@@ -13,8 +13,14 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   modules: {
     user,
-    products,
-    orders,
+    products: {
+      namespaced: true,
+      ...products
+    },
+    orders: {
+      namespaced: true,
+      ...orders
+    },
   },
   state: {
     messages: [],
@@ -31,6 +37,10 @@ const store = new Vuex.Store({
     bindRef: firebaseAction(({ bindFirebaseRef }, { name, ref }) => {
       bindFirebaseRef(name, ref)
     }),
+    init: ({ dispatch }) => {
+      dispatch('products/init');
+      dispatch('orders/init');
+    },
   }
 })
 

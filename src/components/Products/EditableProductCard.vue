@@ -97,7 +97,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['toggleActiveState', 'updateProduct', 'destroyProduct']),
+    ...mapActions('products', ['toggleActiveState', 'updateProduct', 'destroyProduct']),
     onChangeValidate() {
       this.$validator.validateAll();
     },

@@ -5,46 +5,8 @@ import { firebaseAction } from 'vuexfire'
 
 import { ordersCollection, firebase } from '../../firebase'
 
-// Orders scheme
-// {
-//   orderNumber: 0,
-//   customerName: 'Longname Longington',
-//   customerEmail: 'matt@email.com',
-//   orderedAt: '5/5/5 5:55PM',
-//   isPaid: true,
-//   isShipped: false,
-//   productId: 1
-// }
-
 const state = {
   all: [
-    // {
-    //   orderNumber: 0,
-    //   customerName: 'Longname Longington',
-    //   customerEmail: 'matt@email.com',
-    //   orderedAt: '5/5/5 5:55PM',
-    //   isPaid: true,
-    //   isShipped: false,
-    //   productId: 1
-    // },
-    // {
-    //   orderNumber: 0,
-    //   customerName: 'Longname Longington',
-    //   customerEmail: 'matt@email.com',
-    //   orderedAt: '5/5/5 5:55PM',
-    //   isPaid: true,
-    //   isShipped: false,
-    //   productId: 1
-    // },
-    // {
-    //   orderNumber: 0,
-    //   customerName: 'Longname Longington',
-    //   customerEmail: 'matt@email.com',
-    //   orderedAt: '5/5/5 5:55PM',
-    //   isPaid: true,
-    //   isShipped: false,
-    //   productId: 1
-    // },
     // {
     //   orderNumber: 0,
     //   customerName: 'Longname Longington',

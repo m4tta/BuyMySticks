@@ -14,14 +14,14 @@
             <svg class="h-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28"><path class="a" d="M0,2.8A2.808,2.808,0,0,1,2.8,0H25.2A2.8,2.8,0,0,1,28,2.8V5.6H0ZM1.4,7H26.6V25.2A2.8,2.8,0,0,1,23.8,28H4.2a2.8,2.8,0,0,1-2.8-2.8ZM9.8,9.8v2.8h8.4V9.8Z"/></svg>
             <span class="ml-6 text-2xl">Inventory</span>
             <div class="bg-grey-light rounded-full py-1 px-4 ml-auto">
-              <span class="text-lg font-semibold text-black">{{ activeProducts }}</span>
+              <span class="text-lg font-semibold text-black">{{ _self['products/activeProducts'] }}</span>
             </div>
           </router-link>
           <router-link tag="div" to="/dashboard/orders" class="link px-6 py-6 flex no-underline items-center border-r-6 hover:border-blue hover:text-black border-transparent cursor-pointer" active-class="border-blue text-black">
             <svg class="h-6 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28"><path id="Path_6" data-name="Path 6" class="cls-1" d="M5.6,2.8H28L23.8,15.4H5.6a1.4,1.4,0,0,0,0,2.8H23.8V21H5.6a4.2,4.2,0,0,1,0-8.4h.462L4.2,7,2.8,2.8H0V0H4.2A1.4,1.4,0,0,1,5.6,1.4ZM7,28a2.8,2.8,0,1,1,1.98-.82A2.8,2.8,0,0,1,7,28Zm14,0a2.8,2.8,0,1,1,1.98-.82A2.8,2.8,0,0,1,21,28Z"/></svg>
             <span class="ml-6 text-2xl">Orders</span>
             <div class="bg-grey-light rounded-full py-1 px-4 ml-auto">
-              <span class="text-lg font-semibold text-black">{{ pendingOrders }}</span>
+              <span class="text-lg font-semibold text-black">{{ _self['orders/pendingOrders'] }}</span>
             </div>
           </router-link>
           <router-link tag="div" to="/dashboard/inbox" class="link px-6 py-6 flex no-underline items-center border-r-6 hover:border-blue hover:text-black border-transparent cursor-pointer" active-class="border-blue text-black">
@@ -53,8 +53,8 @@ export default {
   name: 'dashboard',
   computed: {
     ...mapGetters([
-      'pendingOrders',
-      'activeProducts',
+      'orders/pendingOrders',
+      'products/activeProducts',
       'unreadMessages',
     ]),
     ...mapState(['user'])

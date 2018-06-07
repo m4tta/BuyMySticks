@@ -2,14 +2,6 @@
 <div>
   <div class="grid">
     <editable-product-card v-for="(product, index) in products.all" :key="index" :product=product />
-    <!-- <div class="px-6 py-4 shadow-lg bg-white rounded my-auto">
-      <svg @click="newProduct" class="cursor-pointer fill-current text-grey-light hover:text-grey-dark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 234.109 234.109">
-        <g id="add-product" transform="translate(-1332.945 -607.945)">
-          <rect id="Rectangle_38" data-name="Rectangle 38" class="cls-1" width="234.109" height="22.226" rx="11.113" transform="translate(1332.945 713.887)"/>
-          <rect id="Rectangle_39" data-name="Rectangle 39" class="cls-1" width="234.109" height="22.226" rx="11.113" transform="translate(1461.113 607.945) rotate(90)"/>
-        </g>
-      </svg>
-    </div> -->
   </div>
   <div class="fixed pin-b pin-r pr-16 pb-12">
     <div @click="newProduct" class="h-16 w-16 rounded-full bg-blue hover:bg-blue-dark cursor-pointer shadow-lg p-3 text-white">
@@ -37,7 +29,7 @@ export default {
     ...mapState(['products'])
   },
   methods: {
-    ...mapActions(['addProduct']),
+    ...mapActions('products', ['addProduct']),
     newProduct () {
       // fire state action to add product that is blank.
       // it will only exist client side until you begin to edit/save changes to it
