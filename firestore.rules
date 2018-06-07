@@ -9,7 +9,8 @@ service cloud.firestore {
       allow write: if isOwner(userId) || getRole('admin');
     }
     match /orders/{document=**} {
-      allow read;
+      allow get;
+      allow list: if getRole('admin');
       
       allow write: if getRole('admin');
     }
