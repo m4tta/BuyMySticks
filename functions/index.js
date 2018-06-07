@@ -91,10 +91,7 @@ exports.stripeCharge = functions.firestore
   // ensure we don't charge unless we have complete customer info.
 
   return order.productRef.get()
-    .then(p => {
-      const product = p.data()
-      return product
-    })
+    .then(p => p.data())
     .then(product => {
       const amount = parseFloat(product.price) * 100
       const currency = 'usd'
@@ -134,13 +131,13 @@ exports.placeOrder = functions.https.onRequest((req, res) => {
       return res.status(400).json({message: 'Missing address information'})
     }
 
-    if (token.object != 'token') {
+    if (token.object !=='token') {
       console.error(req);
       return res.status(400).json({message: 'Missing payment token'})
     }
 
     if (customer && token && address && productId) {
-      admin.firestore().collection('products').doc(productId).get().then(productDoc => {
+      return admin.firestore().collection('products').doc(productId).get().then(productDoc => {
         if (productDoc.exists) {
           // check the product can be bought. stock level? is active? price is not zero?
           const product = productDoc.data();
@@ -157,14 +154,15 @@ exports.placeOrder = functions.https.onRequest((req, res) => {
             updatedAt: admin.firestore.FieldValue.serverTimestamp(),
           }
     
-          admin.firestore().collection('orders').add(order).then(orderDoc => {
+          return admin.firestore().collection('orders').add(order).then(orderDoc => {
             return res.status(200).json({
               message: 'Order placed',
               order: {
                 id: orderDoc.id
               }
             })
-          }).catch(err => {
+          })
+          .catch(err => {
             console.error(err);
             return res.status(500).json({message: 'Product does not exist'})
           })
