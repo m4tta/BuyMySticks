@@ -137,6 +137,7 @@ exports.placeOrder = functions.https.onRequest((req, res) => {
     }
 
     if (customer && token && address && productId) {
+      
       return admin.firestore().collection('products').doc(productId).get().then(productDoc => {
         if (productDoc.exists) {
           // check the product can be bought. stock level? is active? price is not zero?
@@ -154,7 +155,9 @@ exports.placeOrder = functions.https.onRequest((req, res) => {
             updatedAt: admin.firestore.FieldValue.serverTimestamp(),
           }
     
-          return admin.firestore().collection('orders').add(order).then(orderDoc => {
+          return admin.firestore().collection('orders').add(order)
+          .then(orderDoc => {
+            order.productRef.set({stock: product.stock-1}, {merge: true})
             return res.status(200).json({
               message: 'Order placed',
               order: {
@@ -164,7 +167,7 @@ exports.placeOrder = functions.https.onRequest((req, res) => {
           })
           .catch(err => {
             console.error(err);
-            return res.status(500).json({message: 'Product does not exist'})
+            return res.status(500).json({message: 'Order could not be placed'})
           })
 
         } else {
