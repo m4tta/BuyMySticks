@@ -152,7 +152,9 @@ exports.placeOrder = functions.https.onRequest((req, res) => {
             token,
             address,
             customer,
-            productRef: productDoc._ref
+            productRef: productDoc._ref,
+            createdAt: admin.firestore.FieldValue.serverTimestamp(),
+            updatedAt: admin.firestore.FieldValue.serverTimestamp(),
           }
     
           admin.firestore().collection('orders').add(order).then(orderDoc => {
