@@ -28,7 +28,7 @@
                 <span class="text-2xl">{{totalPrice}}</span>
               </div>
             </div>
-            <img :src=thumbnailURL class="ml-6 rounded w-32 min-h-24 bg-grey self-center" alt="A Stick">
+            <img v-if="thumbnailURL" :src=thumbnailURL class="ml-6 rounded w-32 min-h-24 bg-grey self-center" alt="A Stick">
           </div>
         </div>
         <div class="h-px w-full bg-grey-light my-2"/>
@@ -127,7 +127,7 @@
 // @ is an alias to /src
 import { stripeKey, stripeOptions } from '@/stripeConfig'
 import Header from '@/components/Header.vue'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import http from '@/utils/http'
 import _ from 'lodash'
 
@@ -146,8 +146,8 @@ export default {
   data () {
     return {
       buyDisabled: false,
+      productExists: true,
 
-      productExists: false,
       firstName: '',
       lastName: '',
       email: '',
@@ -177,6 +177,9 @@ export default {
       },
     }
   },
+  created() {
+    this.setProduct(this.productId)
+  },
   mounted () {
     card = elements.create('card', {style: this.stripeOptions.style})
     card.mount(this.$refs.card)
@@ -186,16 +189,17 @@ export default {
     card.destroy()
   },
   computed: {
-    // ...mapState(['products']),
+    ...mapState(['products']),
     states: () => ["Alaska", "Alabama", "Arkansas", "American Samoa", "Arizona", "California", "Colorado", "Connecticut", "District of Columbia", "Delaware", "Florida", "Georgia", "Guam", "Hawaii", "Iowa", "Idaho", "Illinois", "Indiana", "Kansas", "Kentucky", "Louisiana", "Massachusetts", "Maryland", "Maine", "Michigan", "Minnesota", "Missouri", "Mississippi", "Montana", "North Carolina", " North Dakota", "Nebraska", "New Hampshire", "New Jersey", "New Mexico", "Nevada", "New York", "Ohio", "Oklahoma", "Oregon", "Pennsylvania", "Puerto Rico", "Rhode Island", "South Carolina", "South Dakota", "Tennessee", "Texas", "Utah", "Virginia", "Virgin Islands", "Vermont", "Washington", "Wisconsin", "West Virginia", "Wyoming"],
     thumbnailURL() {
-      return this.product.imageUrl.replace('images%2Fproducts%2F', 'images%2Fproducts%2Fthumb_')
+      if (this.product.imageUrl) {
+        return this.product.imageUrl.replace('images%2Fproducts%2F', 'images%2Fproducts%2Fthumb_')
+      }
     },
     product() {
-      const product = _.find(this.$store.state.products.all, {id: this.productId})
-      if (product) {
+      if (this.products && this.products.product) {
         this.productExists = true
-        return product
+        return this.products.product
       }
       return {
         name: 'Loading',
@@ -208,6 +212,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('products', ['setProduct']),
     pay () {
       // either a token or an error key.
       // See https://stripe.com/docs/api#tokens for the token object.

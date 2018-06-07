@@ -23,6 +23,7 @@ const activeProducts = productsCollection.where('isActive', '==', true)
 const state = {
   active: [],
   all: [],
+  product: {},
 }
 
 const mutations = {
@@ -39,6 +40,9 @@ const actions = {
   init: firebaseAction(({ bindFirebaseRef }) => {
     bindFirebaseRef('all', productsCollection)
     bindFirebaseRef('active', activeProducts)
+  }),
+  setProduct: firebaseAction(({ bindFirebaseRef }, productId) => {
+    bindFirebaseRef('product', productsCollection.doc(productId))
   }),
   toggleActiveState({}, product) {
     productsCollection.doc(product.id).update({isActive: !product.isActive})
