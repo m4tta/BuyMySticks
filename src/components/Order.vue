@@ -43,7 +43,7 @@ export default {
     order: Object
   },
   methods: {
-    ...mapActions(['toggleShipped']),
+    ...mapActions('orders', ['toggleShipped']),
     toggleShippedStatus () {
       this.toggleShipped(this.order)
     }

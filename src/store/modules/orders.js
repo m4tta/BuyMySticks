@@ -37,6 +37,9 @@ const actions = {
   setOrder: firebaseAction(({ bindFirebaseRef }, orderId) => {
     bindFirebaseRef('order', ordersCollection.doc(orderId))
   }),
+  toggleShipped: ({}, order) => {
+    ordersCollection.doc(order.id).update({isShipped: !order.isShipped})
+  }
 }
 
 export default {

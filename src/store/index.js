@@ -39,7 +39,7 @@ const store = new Vuex.Store({
     }),
     init: ({ dispatch }) => {
       dispatch('products/init');
-      dispatch('orders/init');
+      // dispatch('orders/init');
     },
   }
 })

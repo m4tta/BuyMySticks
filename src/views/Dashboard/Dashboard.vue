@@ -61,11 +61,15 @@ export default {
   },
   methods: {
     ...mapActions(['signOut']),
+    ...mapActions('orders', ['init']),
     logOut() {
       this.signOut().then(() => {
         this.$router.push('/')
       })
     }
+  },
+  created() {
+    this.init()
   }
 }
 </script>

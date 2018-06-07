@@ -1,6 +1,6 @@
 service firebase.storage {
   match /b/{bucket}/o {
-    match /{allPaths=**} {
+    match /images/products/{allPaths=**} {
       allow read;
 
       allow write: if request.resource.size < 15 * 1024 * 1024

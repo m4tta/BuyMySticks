@@ -70,11 +70,11 @@ export default {
       if (this.searchQuery.length > 0) {
         orders = orders.filter(o => {
           let wasFound = false;
-          Object.keys(o).forEach(key => {
-            if (_.includes(o[key].toString().toLowerCase(), this.searchQuery.toLowerCase())) {
-              return wasFound = true
-            }
-          })
+          
+          if (_.includes(o.id.toString().toLowerCase(), this.searchQuery.toLowerCase())) {
+            return wasFound = true
+          }
+          
           return wasFound
         })
       }

@@ -32,29 +32,37 @@
 </template>
 
 <script>
+import Header from '@/components/Header.vue'
 import _ from 'lodash'
 import { mapActions, mapState } from 'vuex'
 import { db } from '@/firebase'
 
 export default {
   name: 'OrderStatus',
+    components: {
+    Header,
+  },
   props: {
     orderId: String
+  },
+  data() {
+    return {
+      step: 0
+    }
   },
   computed: {
     ...mapState(['orders']),
     currentStep() {
-      let step = 0;
       if (_.hasIn(this.order, 'token.card')) {
-        step = 1
+        this.step = 1
       }
       if (_.hasIn(this.order, 'charge') && this.order.charge.paid) {
-        step = 2
+        this.step = 2
       }
       if (this.order.isShipped) {
-        step = 3
+        this.step = 3
       }
-      return step
+      return this.step
     },
     stepWidth() {
       if (this.currentStep <= 1) {
@@ -70,7 +78,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['setOrder']),
+    ...mapActions('orders', ['setOrder']),
   },
   created() {
     this.setOrder(this.orderId)
